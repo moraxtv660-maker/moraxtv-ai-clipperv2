@@ -13,6 +13,23 @@ import numpy as np
 import streamlit as st
 import yt_dlp
 
+# Install Deno for YouTube support
+deno_dir = Path.home() / ".deno"
+deno_bin = deno_dir / "bin"
+deno_path = deno_bin / "deno"
+
+if not deno_path.exists():
+    deno_dir.mkdir(parents=True, exist_ok=True)
+    deno_env = os.environ.copy()
+    deno_env["DENO_INSTALL"] = str(deno_dir)
+
+    subprocess.run(
+        ["sh", "-c", "curl -fsSL https://deno.land/install.sh | sh"],
+        check=True,
+        env=deno_env,
+    )
+
+os.environ["PATH"] = str(deno_bin) + os.pathsep + os.environ.get("PATH", "")
 st.set_page_config(
     page_title="Moraxtv AI Clipper 2.0",
     page_icon="🎮",
