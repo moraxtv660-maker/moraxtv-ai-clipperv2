@@ -30,6 +30,27 @@ if not deno_path.exists():
     )
 
 os.environ["PATH"] = str(deno_bin) + os.pathsep + os.environ.get("PATH", "")
+# PO Token Provider setup
+pot_dir = Path("/tmp/bgutil-ytdlp-pot-provider")
+
+if not (pot_dir / "server" / "node_modules").exists():
+    if not pot_dir.exists():
+        subprocess.run(
+            [
+                "git", "clone",
+                "--single-branch",
+                "--branch", "2.0.2",
+                "https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git",
+                str(pot_dir),
+            ],
+            check=True,
+        )
+
+    subprocess.run(
+        ["deno", "install", "--allow-scripts=npm:canvas", "--frozen"],
+        cwd=pot_dir / "server",
+        check=True,
+    )
 st.set_page_config(
     page_title="Moraxtv AI Clipper 2.0",
     page_icon="🎮",
@@ -176,11 +197,15 @@ def download_youtube(url, folder):
     outtmpl = str(folder / "youtube_source.%(ext)s")
     opts = {
     "format": "best",
-    "extractor_args": {
-        "youtube": {
-            "player_client": ["web_safari"]
-        }
+    
+"extractor_args": {
+    "youtube": {
+        "player_client": ["web_safari"]
     },
+    "youtubepot-bgutilscript": {
+        "server_home": [str(pot_dir / "server")]
+    }
+},        
     "outtmpl": outtmpl,
     "noplaylist": True,
     "max_filesize": 200 * 1024 * 1024,
