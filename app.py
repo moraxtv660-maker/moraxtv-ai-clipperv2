@@ -154,7 +154,7 @@ def make_clips(video_path, output_dir, clip_seconds, max_clips):
     return outputs
 
 def download_youtube(url, folder):
-    if not re.match(r"^https?://(www\\.)?(youtube\\.com|youtu\\.be)/", url.strip(), re.I):
+    if not re.match(r"^https?://(www\.)?(youtube\.com|youtu\.be)/", url.strip(), re.I):
         raise ValueError("Please paste a valid YouTube URL.")
     outtmpl = str(folder / "youtube_source.%(ext)s")
     opts = {
