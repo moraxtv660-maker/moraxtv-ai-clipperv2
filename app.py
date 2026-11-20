@@ -196,7 +196,7 @@ def download_youtube(url, folder):
         raise ValueError("Please paste a valid YouTube URL.")
     outtmpl = str(folder / "youtube_source.%(ext)s")
     opts = {
-    "format": "best",
+    "format": "bestvideo*+bestaudio/best",
     
 "extractor_args": {
     "youtube": {
