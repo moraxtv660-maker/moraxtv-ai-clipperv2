@@ -175,13 +175,18 @@ def download_youtube(url, folder):
         raise ValueError("Please paste a valid YouTube URL.")
     outtmpl = str(folder / "youtube_source.%(ext)s")
     opts = {
-        "format": "best",
-        "outtmpl": outtmpl,
-        "noplaylist": True,
-        "max_filesize": 200 * 1024 * 1024,
-        "quiet": True,
-        "no_warnings": True,
-        "merge_output_format": "mp4",
+    "format": "best",
+    "extractor_args": {
+        "youtube": {
+            "player_client": ["web_safari"]
+        }
+    },
+    "outtmpl": outtmpl,
+    "noplaylist": True,
+    "max_filesize": 200 * 1024 * 1024,
+    "quiet": True,
+    "no_warnings": True,
+    "merge_output_format": "mp4",
     }
     with yt_dlp.YoutubeDL(opts) as ydl:
         ydl.download([url.strip()])
